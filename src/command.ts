@@ -1,12 +1,11 @@
 import * as vscode from 'vscode'
 import { Document } from './document'
-import { Config } from './config'
-const { parseString } = require('xml2js')
+const yamljs = require('yamljs')
 const clipboardy = require('clipboardy')
 const unescape = require('lodash.unescape')
 
-const DOCUMENT_ERROR = 'Selection or document is invalid XML???'
-const CLIPBOARD_ERROR = 'Clipboard is invalid XML???'
+const DOCUMENT_ERROR = 'Selection or document is invalid YAML or JSON???'
+const CLIPBOARD_ERROR = 'Clipboard is invalid YAML or JSON???'
 
 export class Command {
 
@@ -20,16 +19,15 @@ export class Command {
                     if (err || !result) {
                         vscode.window.showErrorMessage(DOCUMENT_ERROR)
                     } else {
-                        const output = JSON.stringify(result, null, 2)
                         if (select) {
-                            Document.replaceSelection(editor, activeEditor.selection, output)
+                            Document.replaceSelection(editor, activeEditor.selection, result)
                         } else {
-                            Document.replaceDocument(editor, activeEditor.document, output)
+                            Document.replaceDocument(editor, activeEditor.document, result)
                         }
                     }
                 }
     
-                this._parser(input, callback)
+                this._convert(input, callback)
             })
         }
     }
@@ -45,33 +43,37 @@ export class Command {
                     if (err || !result) {
                         vscode.window.showErrorMessage(CLIPBOARD_ERROR)
                     } else {
-                        const output = JSON.stringify(result, null, 2)
                         if (select) {
-                            Document.replaceSelection(editor, activeEditor.selection, output)
+                            Document.replaceSelection(editor, activeEditor.selection, result)
                         } else {
-                            Document.insert(editor, activeEditor.selection, output)
+                            Document.insert(editor, activeEditor.selection, result)
                         }
                     }
                 }
     
-                this._parser(input, callback)
+                this._convert(input, callback)
             })
         }
     }
 
-    static _parser(input, callback): void {
-        const builder = Config.preferStyle
-        input = unescape(input)
-
-        switch (builder) {
-            case 'xml2js':
-                parseString(input, callback)
-                break
-            case 'xmlbuilder':
-            case 'custom':
-                const opts = Config[builder]
-                parseString(input, opts, callback)
-                break
+    static _convert(input, callback): void {
+      input = unescape(input)
+      try {
+        // Assume a successful JSON parse means we're converting JSON->YAML
+        const json = JSON.parse(input)
+        // Second parameter controls depth before inlining structures
+        const yaml = yamljs.stringify(json, 6, vscode.workspace.getConfiguration('editor').get('tabSize', 4))
+        callback(null, yaml)
+      }
+      // Otherwise, YAML->JSON?
+      catch {
+        try {
+          const js = yamljs.parse(input)
+          callback(null, JSON.stringify(js, null, 2))
         }
+        catch (e) {
+          callback(e)
+        }
+      }
     }
 }

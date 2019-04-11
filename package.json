@@ -1,209 +1,31 @@
 {
-  "name": "xml2json",
-  "displayName": "XML to JSON",
-  "description": "Convert XML from clipboard or current document/selection to JSON",
-  "version": "1.2.1",
-  "publisher": "buianhthang",
+  "name": "yaml2json",
+  "displayName": "YAML to JSON",
+  "description": "Convert YAML from clipboard or current document/selection to JSON and vice versa.",
+  "version": "0.0.1",
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.33.0"
   },
+  "publisher": "ahebrank",
   "categories": [
     "Other"
   ],
-  "icon": "images/xml2json.png",
-  "galleryBanner": {
-    "color": "#5076f3",
-    "theme": "dark"
-  },
   "activationEvents": [
-    "onCommand:xml2json.document",
-    "onCommand:xml2json.clipboard"
+    "onCommand:yaml2json.document",
+    "onCommand:yaml2json.clipboard"
   ],
   "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "xml2json.document",
-        "title": "XML to JSON: Convert from selection or document"
+        "command": "yaml2json.document",
+        "title": "YAML to JSON: Convert selection or document"
       },
       {
-        "command": "xml2json.clipboard",
-        "title": "XML to JSON: Convert from clipboard"
+        "command": "yaml2json.clipboard",
+        "title": "YAML to JSON: Convert clipboard"
       }
-    ],
-    "menus": {
-      "editor/context": [
-        {
-          "command": "xml2json.document"
-        },
-        {
-          "command": "xml2json.clipboard"
-        }
-      ]
-    },
-    "configuration": {
-      "properties": {
-        "xml2json.preferStyle": {
-          "type": "string",
-          "default": "xml2js",
-          "enum": [
-            "xml2js",
-            "xmlbuilder",
-            "custom"
-          ],
-          "description": "Choose your prefer default settings or config your custom."
-        },
-        "xml2json.options": {
-          "type": "object",
-          "properties": {
-            "attrkey": {
-              "type": "string",
-              "default": "$",
-              "description": "Prefix that is used to access the attributes. Version 0.1 default was @.",
-              "scope": "window"
-            },
-            "charkey": {
-              "type": "string",
-              "default": "_",
-              "description": "Prefix that is used to access the character content. Version 0.1 default was #.",
-              "scope": "window"
-            },
-            "explicitCharkey": {
-              "type": "boolean",
-              "default": false,
-              "description": "",
-              "scope": "window"
-            },
-            "trim": {
-              "type": "boolean",
-              "default": false,
-              "description": "Trim the whitespace at the beginning and end of text nodes.",
-              "scope": "window"
-            },
-            "normalizeTags": {
-              "type": "boolean",
-              "default": false,
-              "description": "Normalize all tag names to lowercase.",
-              "scope": "window"
-            },
-            "normalize": {
-              "type": "boolean",
-              "default": false,
-              "description": "Trim whitespaces inside text nodes.",
-              "scope": "window"
-            },
-            "explicitRoot": {
-              "type": "boolean",
-              "default": true,
-              "description": "Set this if you want to get the root node in the resulting object.",
-              "scope": "window"
-            },
-            "emptyTag": {
-              "type": "string",
-              "default": "",
-              "description": "what will the value of empty nodes be.",
-              "scope": "window"
-            },
-            "explicitArray": {
-              "type": "boolean",
-              "default": true,
-              "description": "Always put child nodes in an array if true; otherwise an array is created only if there is more than one.",
-              "scope": "window"
-            },
-            "ignoreAttrs": {
-              "type": "boolean",
-              "default": false,
-              "description": "Ignore all XML attributes and only create text nodes.",
-              "scope": "window"
-            },
-            "mergeAttrs": {
-              "type": "boolean",
-              "default": false,
-              "description": "Merge attributes and child elements as properties of the parent, instead of keying attributes off a child attribute object. This option is ignored if ignoreAttrs is false.",
-              "scope": "window"
-            },
-            "validator": {
-              "type": "string",
-              "default": null,
-              "description": "You can specify a callable that validates the resulting structure somehow, however you want. See unit tests for an example.",
-              "scope": "window"
-            },
-            "xmlns": {
-              "type": "boolean",
-              "default": false,
-              "description": "Give each element a field usually called '$ns' (the first character is the same as attrkey) that contains its local name and namespace URI.",
-              "scope": "window"
-            },
-            "explicitChildren": {
-              "type": "boolean",
-              "default": false,
-              "description": "Put child elements to separate property. Doesn't work with mergeAttrs = true. If element has no children then \"children\" won't be created. Added in 0.2.5.",
-              "scope": "window"
-            },
-            "childkey": {
-              "type": "string",
-              "default": "$$",
-              "description": "Prefix that is used to access child elements if explicitChildren is set to true. Added in 0.2.5.",
-              "scope": "window"
-            },
-            "preserveChildrenOrder": {
-              "type": "boolean",
-              "default": false,
-              "description": "Modifies the behavior of explicitChildren so that the value of the \"children\" property becomes an ordered array. When this is true, every node will also get a #name field whose value will correspond to the XML nodeName, so that you may iterate the \"children\" array and still be able to determine node names. The named (and potentially unordered) properties are also retained in this configuration at the same level as the ordered \"children\" array. Added in 0.4.9.",
-              "scope": "window"
-            },
-            "charsAsChildren": {
-              "type": "boolean",
-              "default": false,
-              "description": "Determines whether chars should be considered children if explicitChildren is on. Added in 0.2.5.",
-              "scope": "window"
-            },
-            "includeWhiteChars": {
-              "type": "boolean",
-              "default": false,
-              "description": "Determines whether whitespace-only text nodes should be included. Added in 0.4.17.",
-              "scope": "window"
-            },
-            "async": {
-              "type": "boolean",
-              "default": false,
-              "description": "Should the callbacks be async? This might be an incompatible change if your code depends on sync execution of callbacks. Future versions of xml2js might change this default, so the recommendation is to not depend on sync execution anyway. Added in 0.2.6.",
-              "scope": "window"
-            },
-            "strict": {
-              "type": "boolean",
-              "default": true,
-              "description": "Set sax-js to strict or non-strict parsing mode. Defaults to true which is highly recommended, since parsing HTML which is not well-formed XML might yield just about anything. Added in 0.2.7.",
-              "scope": "window"
-            },
-            "attrNameProcessors": {
-              "type": "string",
-              "default": null,
-              "description": "Allows the addition of attribute name processing functions. Accepts an Array of functions. Added in 0.4.14.",
-              "scope": "window"
-            },
-            "attrValueProcessors": {
-              "type": "string",
-              "default": null,
-              "description": "Allows the addition of attribute value processing functions. Accepts an Array of functions. Added in 0.4.1.",
-              "scope": "window"
-            },
-            "tagNameProcessors": {
-              "type": "string",
-              "default": null,
-              "description": "Allows the addition of tag name processing functions. Accepts an Array of functions. Added in 0.4.1.",
-              "scope": "window"
-            },
-            "valueProcessors": {
-              "type": "string",
-              "default": null,
-              "description": "Allows the addition of element value processing functions. Accepts an Array of functions. Added in 0.4.6.",
-              "scope": "window"
-            }
-          }
-        }
-      }
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -221,22 +43,20 @@
   "dependencies": {
     "clipboardy": "^1.2.3",
     "lodash.unescape": "^4.0.1",
-    "xml2js": "^0.4.19"
+    "yamljs": "^0.3.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buianhthang/vscode-xml2json.git"
+    "url": "https://github.com/ahebrank/vscode-yaml2json"
   },
   "keywords": [
     "vscode",
-    "xml2json",
-    "xml2js",
-    "xmlbuilder"
+    "yaml2json"
   ],
-  "author": "Anh Thang Bui <buianhthang89@gmail.com> (https://anhthang.org)",
+  "author": "Andy Hebrank",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buianhthang/vscode-xml2json/issues"
+    "url": "https://github.com/ahebrank/vscode-yaml2json/issues"
   },
-  "homepage": "https://github.com/buianhthang/vscode-xml2json#readme"
+  "homepage": "https://github.com/ahebrank/vscode-yaml2json"
 }

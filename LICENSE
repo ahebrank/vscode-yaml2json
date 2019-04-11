@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2017 Anh Thang Bui https://anhthang.org
+Copyright (c) 2017 Anh Thang Bui https://anhthang.org (original vscode-xml2json)
+Forked and modified for YAML support by Andy Hebrank 2019
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

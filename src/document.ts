@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 
-const SUCCESSFUL = 'Converted successful!'
+const SUCCESSFUL = 'Converted successfully!'
 
 export class Document {
     static replaceSelection(editor: vscode.TextEditorEdit, selection: vscode.Selection, data: string): void {
