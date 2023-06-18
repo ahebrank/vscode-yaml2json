@@ -15,14 +15,14 @@ export class Command {
             activeEditor.edit(editor => {
                 const select = activeEditor.document.getText(activeEditor.selection)
                 let input = select || activeEditor.document.getText()
-                const callback = (err, result) => {
+                const callback = (err, result, newFormat) => {
                     if (err || !result) {
                         vscode.window.showErrorMessage(DOCUMENT_ERROR)
                     } else {
                         if (select) {
                             Document.replaceSelection(editor, activeEditor.selection, result)
                         } else {
-                            Document.replaceDocument(editor, activeEditor.document, result)
+                            Document.replaceDocument(editor, activeEditor.document, result, newFormat)
                         }
                     }
                 }
@@ -39,7 +39,7 @@ export class Command {
                 const select = activeEditor.document.getText(activeEditor.selection)
 
                 let input = clipboardy.readSync()
-                const callback = (err, result) => {
+                const callback = (err, result, newFormat) => {
                     if (err || !result) {
                         vscode.window.showErrorMessage(CLIPBOARD_ERROR)
                     } else {
@@ -63,13 +63,13 @@ export class Command {
         const json = JSON.parse(input)
         // Second parameter controls depth before inlining structures
         const yaml = yamljs.stringify(json, 6, vscode.workspace.getConfiguration('editor').get('tabSize', 4))
-        callback(null, yaml)
+        callback(null, yaml, 'yaml')
       }
       // Otherwise, YAML->JSON?
       catch {
         try {
           const js = yamljs.parse(input)
-          callback(null, JSON.stringify(js, null, 2))
+          callback(null, JSON.stringify(js, null, 2), 'json')
         }
         catch (e) {
           callback(e)
