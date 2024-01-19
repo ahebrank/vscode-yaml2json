@@ -57,23 +57,24 @@ export class Command {
     }
 
     static _convert(input, callback): void {
-      input = unescape(input)
-      try {
-        // Assume a successful JSON parse means we're converting JSON->YAML
-        const json = JSON.parse(input)
-        // Second parameter controls depth before inlining structures
-        const yaml = yamljs.stringify(json, 6, vscode.workspace.getConfiguration('editor').get('tabSize', 4))
-        callback(null, yaml, 'yaml')
-      }
-      // Otherwise, YAML->JSON?
-      catch {
+        const settings = vscode.workspace.getConfiguration('yaml2json');
+        input = unescape(input)
         try {
-          const js = yamljs.parse(input)
-          callback(null, JSON.stringify(js, null, 2), 'json')
+            // Assume a successful JSON parse means we're converting JSON->YAML
+            const json = JSON.parse(input)
+            // Second parameter controls depth before inlining structures
+            const yaml = yamljs.stringify(json, settings.get('yamlExpansionDepth'), vscode.workspace.getConfiguration('editor').get('tabSize', 4))
+            callback(null, yaml, 'yaml')
         }
-        catch (e) {
-          callback(e)
+        // Otherwise, YAML->JSON?
+        catch {
+            try {
+            const js = yamljs.parse(input)
+            callback(null, JSON.stringify(js, null, 2), 'json')
+            }
+            catch (e) {
+            callback(e)
+            }
         }
-      }
+        }
     }
-}

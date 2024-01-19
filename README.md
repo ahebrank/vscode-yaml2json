@@ -13,4 +13,8 @@ These commands autodetect the input format, so if you have YAML in the clipboard
 
 ![Converting JSON to YAML](images/converting-json.jpg)
 
-Adapted from https://github.com/buianhthang/vscode-xml2json/
+This extension is adapted from https://github.com/buianhthang/vscode-xml2json/
+
+## Extension settings
+
+`yamlExpansionDepth`: with deeply nested structures, YAML expansion can produce a lot of whitespace indentation. To keep lines from going off the screen horizontally, you can set the maximum depth of the structure to expand before switching to a more compact inline format.The default value is `6`.

@@ -2,17 +2,13 @@
   "name": "yaml2json",
   "displayName": "YAML to JSON",
   "description": "Convert YAML from clipboard or current document/selection to JSON and vice versa.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
-    "vscode": "^1.33.0"
+    "vscode": "^1.75.0"
   },
   "publisher": "ahebrank",
   "categories": [
     "Other"
-  ],
-  "activationEvents": [
-    "onCommand:yaml2json.document",
-    "onCommand:yaml2json.clipboard"
   ],
   "main": "./out/extension",
   "contributes": {
@@ -25,7 +21,18 @@
         "command": "yaml2json.clipboard",
         "title": "YAML to JSON: Convert clipboard"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "yaml2json",
+      "properties": {
+        "yaml2json.yamlExpansionDepth": {
+          "type": "number",
+          "default": 6,
+          "minimum": 0,
+          "description": "Maximum depth of YAML expansion before using inline format"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
