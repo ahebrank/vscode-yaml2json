@@ -47,7 +47,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "clipboardy": "^1.2.3",
+    "clipboardy": "^4.0.0",
     "lodash.unescape": "^4.0.1",
     "yamljs": "^0.3.0"
   },
