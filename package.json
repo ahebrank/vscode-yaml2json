@@ -2,7 +2,7 @@
   "name": "yaml2json",
   "displayName": "YAML to JSON",
   "description": "Convert YAML from clipboard or current document/selection to JSON and vice versa.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.75.0"
   },
