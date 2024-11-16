@@ -2,7 +2,7 @@
   "name": "yaml2json",
   "displayName": "YAML to JSON",
   "description": "Convert YAML from clipboard or current document/selection to JSON and vice versa.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -38,16 +38,21 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "lint": "eslint"
   },
   "devDependencies": {
+    "@types/lodash.unescape": "^4.0.9",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.14.8",
-    "@types/vscode": "^1.33.0",
-    "typescript": "^3.5.1"
+    "@eslint/js": "^9.13.0",
+		"@stylistic/eslint-plugin": "^2.9.0",
+		"@types/node": "^20",
+		"@types/vscode": "1.90.0",
+		"eslint": "^9.13.0",
+		"typescript": "^5.6.2",
+		"typescript-eslint": "^8.11.0"
   },
   "dependencies": {
-    "clipboardy": "^4.0.0",
+    "clipboardy": "^2",
     "lodash.unescape": "^4.0.1",
     "yamljs": "^0.3.0"
   },
