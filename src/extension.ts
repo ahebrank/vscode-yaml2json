@@ -1,21 +1,30 @@
 'use strict'
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode'
 import { Command } from './command'
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  // Update hooks.
+  const extension = vscode.extensions.getExtension('ahebrank.yaml2json')
+  if (extension) {
+    if (!context.globalState.get('spaceSettingUpdated', false) && extension.packageJSON.version == "0.0.9") {
+      // Make sure we only do this once.
+      context.globalState.update('spaceSettingUpdated', true)
+      // Set the yamlIndentationSpaces setting based on the workspace tabSize
+      // to keep behavior consistent with previous versions.
+      const wsSpaces = vscode.workspace.getConfiguration('editor').get('tabSize')
+      // If there's a tabSize setting override the extension setting.
+      if (wsSpaces) {
+        vscode.workspace.getConfiguration('yaml2json').update('yamlIndentationSpaces', wsSpaces, vscode.ConfigurationTarget.Global)
+          .then(() => {
+            vscode.window.showInformationMessage('Setting YAML indentation to match workspace tabSize setting ' + wsSpaces)
+          }, (error) => {
+            console.error('Unable to update yamlIndentationSpaces setting: ' + error)
+          })
+      }
+    }
+  }
   
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
-  console.log('"yaml2json" is now active')
-  
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with  registerCommand
-  // The commandId parameter must match the command field in package.json
-  
+  // Register extension commands.
   const commands = [
     vscode.commands.registerCommand(`yaml2json.document`, () => Command.convertDocument()),
     vscode.commands.registerCommand(`yaml2json.clipboard`, () => Command.convertClipboard()),
@@ -24,6 +33,5 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(...commands)
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
 }

@@ -1,11 +1,8 @@
 import * as vscode from 'vscode'
 
-const SUCCESSFUL = 'Converted successfully!'
-
 export class Document {
   static replaceSelection(editor: vscode.TextEditorEdit, selection: vscode.Selection, data: string): void {
     editor.replace(selection, data)
-    vscode.window.showInformationMessage(SUCCESSFUL)
   }
   
   static replaceDocument(editor: vscode.TextEditorEdit, document: vscode.TextDocument, data: string, newFormat: string): void {
@@ -14,11 +11,9 @@ export class Document {
     range = document.validateRange(range)
     editor.replace(range, data)
     vscode.languages.setTextDocumentLanguage(document, newFormat)
-    vscode.window.showInformationMessage(SUCCESSFUL)
   }
   
   static insert(editor: vscode.TextEditorEdit, selection: vscode.Selection, data: string): void {
     editor.insert(selection.active, data)
-    vscode.window.showInformationMessage(SUCCESSFUL)
   }
 }

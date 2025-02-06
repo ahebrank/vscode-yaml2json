@@ -2,7 +2,7 @@
   "name": "yaml2json",
   "displayName": "YAML to JSON",
   "description": "Convert YAML from clipboard or current document/selection to JSON and vice versa.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -30,6 +30,12 @@
           "default": 6,
           "minimum": 0,
           "description": "Maximum depth of YAML expansion before using inline format"
+        },
+        "yaml2json.yamlIndentationSpaces": {
+          "type": "number",
+          "default": 4,
+          "minimum": 1,
+          "description": "Number of spaces to use for YAML indentation."
         }
       }
     }

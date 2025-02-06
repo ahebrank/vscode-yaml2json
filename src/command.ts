@@ -57,13 +57,14 @@ export class Command {
   }
   
   static _convert(input, callback): void {
-    const settings = vscode.workspace.getConfiguration('yaml2json');
+    const settings = vscode.workspace.getConfiguration('yaml2json')
     input = unescape(input)
     try {
       // Assume a successful JSON parse means we're converting JSON->YAML
       const json = JSON.parse(input)
-      // Second parameter controls depth before inlining structures
-      const yaml = yamljs.stringify(json, settings.get('yamlExpansionDepth'), vscode.workspace.getConfiguration('editor').get('tabSize', 4))
+      // Second parameter controls depth before inlining structures.
+      // Third parameter is the number of spaces for indentation. TIL YAML requires spaces, but doesn't care how many.
+      const yaml = yamljs.stringify(json, settings.get('yamlExpansionDepth'), settings.get('yamlIndentationSpaces'))
       callback(null, yaml, 'yaml')
     }
     // Otherwise, YAML->JSON?
